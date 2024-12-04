@@ -1,8 +1,12 @@
 <?php
 class Bird extends DatabaseObject {
+  // Set the database table name
   static protected $table_name = 'birds';
+  
+  // Define database columns
   static protected $columns = ['id', 'common_name', 'habitat', 'food', 'conservation_id', 'backyard_tips'];
 
+  // Define object properties that match database columns
   public $id;
   public $common_name;
   public $habitat;
@@ -10,6 +14,7 @@ class Bird extends DatabaseObject {
   public $conservation_id;
   public $backyard_tips;
 
+  // Define conservation levels
   public const CONSERVATION_OPTIONS = [
     1 => 'Low concern',
     2 => 'Moderate concern',
@@ -18,6 +23,7 @@ class Bird extends DatabaseObject {
   ];
 
   public function __construct($args=[]) {
+    $this->id = $args['id'] ?? '';
     $this->common_name = $args['common_name'] ?? '';
     $this->habitat = $args['habitat'] ?? '';
     $this->food = $args['food'] ?? '';
@@ -37,7 +43,7 @@ class Bird extends DatabaseObject {
     $this->errors = [];
 
     if(is_blank($this->common_name)) {
-      $this->errors[] = "Common name cannot be blank.";
+      $this->errors[] = "Name cannot be blank.";
     }
     if(is_blank($this->habitat)) {
       $this->errors[] = "Habitat cannot be blank.";
@@ -48,6 +54,7 @@ class Bird extends DatabaseObject {
     if(!isset(self::CONSERVATION_OPTIONS[$this->conservation_id])) {
       $this->errors[] = "Conservation level must be valid.";
     }
+
     return $this->errors;
   }
 }

@@ -1,23 +1,39 @@
 <?php
 class Member extends DatabaseObject {
-  static protected $table_name = 'members';
-  static protected $columns = ['id', 'first_name', 'last_name', 'email', 'username', 'hashed_password'];
+  static protected $table_name = 'users';
+  static protected $columns = ['id', 'first_name', 'last_name', 'email', 'username', 'user_level', 'hashed_password'];
 
   public $id;
   public $first_name;
   public $last_name;
   public $email;
   public $username;
+  public $user_level;
   protected $hashed_password;
   public $password;
   public $confirm_password;
-  protected $password_required = true;
+
+  public function verify_password($password) {
+    return password_verify($password, $this->hashed_password);
+  }
+
+  static public function find_by_username($username) {
+    $sql = "SELECT * FROM " . static::$table_name . " ";
+    $sql .= "WHERE username='" . self::$database->escape_string($username) . "'";
+    $obj_array = static::find_by_sql($sql);
+    if(!empty($obj_array)) {
+      return array_shift($obj_array);
+    } else {
+      return false;
+    }
+  }
 
   public function __construct($args=[]) {
     $this->first_name = $args['first_name'] ?? '';
     $this->last_name = $args['last_name'] ?? '';
     $this->email = $args['email'] ?? '';
     $this->username = $args['username'] ?? '';
+    $this->user_level = $args['user_level'] ?? 'M';
     $this->password = $args['password'] ?? '';
     $this->confirm_password = $args['confirm_password'] ?? '';
   }

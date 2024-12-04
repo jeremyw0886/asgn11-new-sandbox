@@ -3,40 +3,53 @@ require_once('../../private/initialize.php');
 require_login();
 
 $id = $_GET['id'] ?? '1';
-$member = Member::find_by_id($id);
-if(!$member) {
+$bird = Bird::find_by_id($id);
+
+if(!$bird) {
   redirect_to(url_for('/members/index.php'));
 }
 
-$page_title = 'Show Member: ' . h($member->full_name());
-include(SHARED_PATH . '/public_header.php');
+$page_title = 'View Bird: ' . h($bird->common_name);
+include(SHARED_PATH . '/member_header.php');
 ?>
 
-<div id="content">
-  <a class="back-link" href="<?php echo url_for('/members/index.php'); ?>">&laquo; Back to List</a>
+<div id="main">
+  <a href="<?php echo url_for('/members/index.php'); ?>">&laquo; Back to List</a>
 
-  <div class="member show">
-    <h1>Member: <?php echo h($member->full_name()); ?></h1>
+  <div class="bird show">
+    <h1>Bird: <?php echo h($bird->common_name); ?></h1>
 
     <div class="attributes">
       <dl>
-        <dt>First Name</dt>
-        <dd><?php echo h($member->first_name); ?></dd>
+        <dt>Name</dt>
+        <dd><?php echo h($bird->common_name); ?></dd>
       </dl>
       <dl>
-        <dt>Last Name</dt>
-        <dd><?php echo h($member->last_name); ?></dd>
+        <dt>Habitat</dt>
+        <dd><?php echo h($bird->habitat); ?></dd>
       </dl>
       <dl>
-        <dt>Email</dt>
-        <dd><?php echo h($member->email); ?></dd>
+        <dt>Food</dt>
+        <dd><?php echo h($bird->food); ?></dd>
       </dl>
       <dl>
-        <dt>Username</dt>
-        <dd><?php echo h($member->username); ?></dd>
+        <dt>Conservation Status</dt>
+        <dd><?php echo h($bird->conservation_level()); ?></dd>
       </dl>
+      <dl>
+        <dt>Backyard Tips</dt>
+        <dd><?php echo h($bird->backyard_tips); ?></dd>
+      </dl>
+    </div>
+
+    <div class="actions">
+      <a class="action" href="<?php echo url_for('/birds/edit.php?id=' . h(u($bird->id))); ?>">Edit</a>
+      <a class="action" href="<?php echo url_for('/birds/delete.php?id=' . h(u($bird->id))); ?>">Delete</a>
     </div>
   </div>
 </div>
 
-<?php include(SHARED_PATH . '/public_footer.php'); ?>
+<?php 
+include(SHARED_PATH . '/copyright_disclaimer.php');
+include(SHARED_PATH . '/public_footer.php'); 
+?>

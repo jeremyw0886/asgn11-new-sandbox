@@ -16,20 +16,7 @@ function display_session_message() {
   }
 }
 
-function display_errors($errors=array()) {
-  $output = '';
-  if(!empty($errors)) {
-    $output .= "<div class=\"errors\">";
-    $output .= "Please fix the following errors:";
-    $output .= "<ul>";
-    foreach($errors as $error) {
-      $output .= "<li>" . h($error) . "</li>";
-    }
-    $output .= "</ul>";
-    $output .= "</div>";
-  }
-  return $output;
-}
+// Removed display_errors() function since it's already in functions.php
 
 function get_and_clear_session_message() {
   if(isset($_SESSION['message']) && $_SESSION['message'] != '') {

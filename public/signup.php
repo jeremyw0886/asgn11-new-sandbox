@@ -8,8 +8,9 @@ if(is_post_request()) {
 
   if($result === true) {
     $session->login($member);
+    $_SESSION['user_level'] = $member->user_level;
     $session->message('You have signed up successfully.');
-    redirect_to(url_for('/birds/birds.php'));
+    redirect_to(url_for('/members/show.php?id=' . $member->id));
   } else {
     // show errors
   }

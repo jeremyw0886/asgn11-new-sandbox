@@ -4,8 +4,6 @@ class Session {
   public $username;
   private $last_login;
 
-  public const MAX_LOGIN_AGE = 60*60*24; // 1 day
-
   public function __construct() {
     session_start();
     $this->check_stored_login();
@@ -47,26 +45,11 @@ class Session {
   private function last_login_is_recent() {
     if(!isset($this->last_login)) {
       return false;
-    } elseif(($this->last_login + self::MAX_LOGIN_AGE) < time()) {
+    } elseif(($this->last_login + (60 * 60 * 24)) < time()) {
       return false;
     } else {
       return true;
     }
-  }
-
-  public function message($msg="") {
-    if(!empty($msg)) {
-      // Then this is a "set" message
-      $_SESSION['message'] = $msg;
-      return true;
-    } else {
-      // Then this is a "get" message
-      return $_SESSION['message'] ?? '';
-    }
-  }
-
-  public function clear_message() {
-    unset($_SESSION['message']);
   }
 }
 ?>

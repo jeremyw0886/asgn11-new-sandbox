@@ -55,4 +55,19 @@ function display_errors($errors=array()) {
   }
   return $output;
 }
+
+function get_conservation_level($conservation_id) {
+    switch($conservation_id) {
+        case 1:
+            return 'Low concern';
+        case 2:
+            return 'Moderate concern';
+        case 3:
+            return 'High concern';
+        case 4:
+            return 'Extreme concern';
+        default:
+            return 'Unknown';
+    }
+}
 ?>

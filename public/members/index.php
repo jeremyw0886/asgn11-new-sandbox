@@ -2,13 +2,18 @@
 require_once('../../private/initialize.php');
 require_login();
 
-$page_title = 'Members';
-include(SHARED_PATH . '/public_header.php');
+// Only admins can access this page
+if(!$session->is_admin()) {
+  redirect_to(url_for('/birds/index.php'));
+}
 
 $members = Member::find_all();
+
+$page_title = 'Members';
+include(SHARED_PATH . '/member_header.php');
 ?>
 
-<div id="content">
+<div id="main">
   <div class="members listing">
     <h1>Members</h1>
 
@@ -23,6 +28,7 @@ $members = Member::find_all();
         <th>Last Name</th>
         <th>Email</th>
         <th>Username</th>
+        <th>User Level</th>
         <th>&nbsp;</th>
         <th>&nbsp;</th>
         <th>&nbsp;</th>
@@ -35,6 +41,7 @@ $members = Member::find_all();
           <td><?php echo h($member->last_name); ?></td>
           <td><?php echo h($member->email); ?></td>
           <td><?php echo h($member->username); ?></td>
+          <td><?php echo h(Member::USER_LEVELS[$member->user_level]); ?></td>
           <td><a class="action" href="<?php echo url_for('/members/show.php?id=' . h(u($member->id))); ?>">View</a></td>
           <td><a class="action" href="<?php echo url_for('/members/edit.php?id=' . h(u($member->id))); ?>">Edit</a></td>
           <td><a class="action" href="<?php echo url_for('/members/delete.php?id=' . h(u($member->id))); ?>">Delete</a></td>
